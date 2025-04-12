@@ -1,0 +1,177 @@
+/* Link List Operation */
+#include<stdio.h>
+#include<conio.h>
+#include<malloc.h>
+
+#define M 10
+
+typedef struct node
+{
+  int data;
+  struct node *next;
+}NODE;
+/*-------------------------------------------------------------------*/
+NODE *createList();
+void displayList(NODE *);
+NODE *deleteNode(NODE *st);
+NODE *insertNode(NODE *st);
+/*-------------------------------------------------------------------*/
+void main()
+{
+  NODE *first;
+  int ch;
+
+  do
+  {
+    clrscr();
+    printf("\n\n\t\t***MENU***");
+    printf("\n\t#1 CREATE LIST");
+    printf("\n\t#2 DISPLAY LIST");
+    printf("\n\t#3 INSERT NODE");
+    printf("\n\t#4 DELETE NODE");
+    printf("\n\t#5 EXIT");
+    printf("\n\tENTER YOUR CHOICE : ");
+    scanf("%d",&ch);
+
+    switch(ch)
+    {
+      case 1:
+		first = createList();
+		printf("\n\tLIST CREATED.....");
+		break;
+      case 2:
+		displayList(first);
+		printf("\n\tLIST DISPLAYED.....");
+		break;
+      case 3:
+		first = insertNode(first);
+		printf("\n\tNODE INSERTED.....");
+		break;
+      case 4:
+		first = deleteNode(first);
+		printf("\n\tNODE DELETED....");
+		break;
+      case 5:
+		printf("\n\tTHANK YOU....");
+		break;
+      default:
+		printf("\n\tWRONG CHOICE.....");
+    }
+    getch();
+  }while(ch != 5);
+}
+/*-------------------------------------------------------------------*/
+NODE *createList()
+{
+  NODE *start,*last,*temp;
+  char ch;
+
+  start = (NODE *)malloc(sizeof(NODE));
+  printf("\n\tEnter the data : ");
+  scanf("%d",&start->data);
+  start->next = NULL;
+  last = start;
+
+  printf("\n\tDo u want to continue : ");
+  ch = getche();
+
+  while(ch == 'y' || ch == 'Y')
+  {
+    temp = (NODE *)malloc(sizeof(NODE));
+    printf("\n\tEnter the data : ");
+    scanf("%d",&temp->data);
+    temp->next = NULL;
+    last->next = temp;
+    last = temp;
+
+    printf("\n\tDo u want to continue : ");
+    ch = getche();
+  };
+
+  return start;
+}
+/*-------------------------------------------------------------------*/
+void displayList(NODE *st)
+{
+  while(st != NULL)
+  {
+    printf(" %d ",st->data);
+    st = st->next;
+  };
+}
+/*-------------------------------------------------------------------*/
+NODE *insertNode(NODE *st)
+{
+  NODE *temp,*head = st;
+  char ch;
+  int d;
+
+  temp = (NODE *)malloc(sizeof(NODE));
+  printf("\n\tEnter the data to be inserted : ");
+  scanf("%d",&temp->data);
+  printf("\n\tDo u want to insert at start or else where (y/n): ");
+  ch = getche();
+
+  if(ch == 'y' || ch == 'Y')
+  {
+    temp->next = st;
+    st = temp;
+    return st;
+  }
+  else
+  {
+    printf("\n\tEnter the data after which u want to insert node : ");
+    scanf("%d",&d);
+    while(st != NULL)
+    {
+      if(st->data == d)
+      {
+	temp->next = st->next;
+	st->next = temp;
+	break;
+      }
+      else
+      {
+	st = st->next;
+      }
+    }
+    return head;
+  }
+}
+/*-------------------------------------------------------------------*/
+NODE *deleteNode(NODE *st)
+{
+  NODE *temp,*st1,*head = st;
+  int d;
+
+  printf("\n\tEnter the data to be deleted : ");
+  scanf("%d",&d);
+
+  if(st->data == d)
+  {
+    temp = st;
+    st = st->next;
+    free(temp);
+    return st;
+  }
+  else
+  {
+    st1 = st->next;
+    while(st1 != NULL)
+    {
+      if(st1->data == d)
+      {
+	st->next = st1->next;
+	free(st1);
+	break;
+      }
+      else
+      {
+	st = st->next;
+	st1 = st1->next;
+      }
+    };
+  }
+  return head;
+}
+/*-------------------------------------------------------------------*/
